@@ -1,0 +1,16 @@
+#!/bin/bash
+
+LOCK=/tmp/expand_toolbar.lock
+
+if [ -f "$LOCK" ]; then
+    exit 0
+else
+    exit 1
+fi
+
+# Read the current class from the file. If file doesn't exist, assume collapsed.
+#if [ -f "$LOCK" ]; then
+#    echo '{"class": "expanded"}'
+#else
+#    echo '{"class": "collapsed"}'
+#fi

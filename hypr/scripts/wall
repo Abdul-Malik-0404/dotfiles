@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+#swww init
+swww-daemon
+raw_cursor_pos=$(hyprctl cursorpos | tr -d ' ')
+cursor_x=$(echo "$raw_cursor_pos" | cut -d',' -f1)
+cursor_y=$(echo "$raw_cursor_pos" | cut -d',' -f2)
+inverted_y=$((1080 - cursor_y))
+inverted_cursor_pos="${cursor_x},${inverted_y}"
+swww img $1 --transition-type grow --transition-pos "$inverted_cursor_pos" --transition-duration 3

@@ -1,0 +1,94 @@
+#!/usr/bin/bash
+TEMP=/tmp/current_wall
+
+files=(~/.config/hypr/wallpapers/*)
+
+hypr=~/.config/hypr
+scripts=$hypr/scripts
+
+cooldown=0.1
+
+
+while true
+do
+    case "$1" in
+        "cycle")
+            index=$(cat $TEMP)
+            index=$((index+1))
+            if [ $index -ge ${#files[@]} ]; then
+                index=0
+            fi
+            echo $index > $TEMP
+            $scripts/wall "${files[$index]}"
+            exit 0
+            ;;
+        "arrow-icon")
+            if $scripts/toolbar_state; then
+                echo ""
+            else
+                echo ""
+            fi
+            ;;
+        "ss-icon")
+            if $scripts/toolbar_state; then
+                echo ""
+            else
+                echo ""
+            fi
+            ;;
+        # "media")
+        "pulseaudio-status")
+            if $scripts/toolbar_state; then
+                # Get current volume and icon. This requires knowing how Waybar's pulseaudio module gets its info.
+                # A simple way: use pamixer or pactl. Example using pactl:
+                VOLUME=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\d+%' | head -1 | sed 's/%//')
+                MUTE_STATUS=$(pactl get-sink-mute @DEFAULT_SINK@ | grep -oP 'Mute: (yes|no)' | awk '{print $2}')
+
+                if [ "$MUTE_STATUS" == "yes" ]; then
+                    ICON="" # Muted icon
+                elif [ "$VOLUME" -eq 0 ]; then
+                    ICON="" # Volume 0 icon
+                elif [ "$VOLUME" -le 50 ]; then
+                    ICON="" # Volume low icon
+                else
+                    ICON="" # Volume high icon
+                fi
+                echo "${ICON} ${VOLUME}%"
+            else
+                echo "" # Hidden when collapsed
+            fi
+            ;;
+
+        "memory")
+            if $scripts/toolbar_state; then
+                MEM=$(free -h | awk '/Mem:/ {print $3 "/" $2}')
+                echo " $MEM"
+                echo ""
+            fi
+            ;;
+        "battery")
+            if $scripts/toolbar_state; then
+                echo "hello"
+            else
+                echo ""
+            fi
+            ;;
+
+        "power")
+            if $scripts/toolbar_state; then
+                echo "⏻"
+            else
+                echo ""
+            fi
+            ;;
+
+        *)
+            if $scripts/toolbar_state; then
+                echo "     "
+            else
+                echo ""
+            fi
+            ;;
+    esac
+    sleep $cooldown
+done
