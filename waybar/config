@@ -19,6 +19,7 @@
     "custom/cpu",
     "custom/power",
     "custom/expand",
+    "idle_inhibitor",
     "battery",
     "pulseaudio",
     "backlight",

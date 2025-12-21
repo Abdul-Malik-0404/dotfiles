@@ -1,1 +1,1 @@
-{"class": "none", "text": ""}
+{"class": "paused", "text": "\u25b6 Bog - Vibe Coder Tries Neovim (20:55/48:10) ", "tooltip": "Vibe Coder Tries Neovim\nby Bog\n(Firefox)"}
